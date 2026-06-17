@@ -52,6 +52,111 @@ POST /base/login
 
 ## 📊 榜单数据接口
 
+### 引力指数
+```bash
+POST /open/gravity
+{
+  "page": 1,
+  "page_size": 10,
+  "type": "week"  // day, week, month, allTime
+}
+
+Response:
+{
+  "data": {
+    "list": [
+      {
+        "rankno": 1,
+        "address": "0x...",
+        "profit": "收益质量",
+        "risk": "风险控制",
+        "market": "市场相位",
+        "leverage": "杠杆艺术",
+        "win_rate": "胜率矩阵",
+        "footprint": "链上足迹",
+        "score": "引力指数",
+        "pnl": "收益",
+        "pnl30d": "30天收益",
+        "roi": "收益率",
+        "value": "账户价值"
+      }
+    ],
+    "total": 45057
+  }
+}
+```
+
+### 信用信誉排行榜
+```bash
+POST /open/credrank
+{
+  "page": 1,
+  "page_size": 10,
+  "type": "week"  // day, week, month, allTime
+}
+
+Response:
+{
+  "data": {
+    "list": [
+      {
+        "rankno": 1,
+        "address": "0x...",
+        "gravity_index": "引力指数",
+        "eco_score": "生态分",
+        "social_credit": "社交信用",
+        "identity_consistency": "身份一致性",
+        "credscore": "信用分"
+      }
+    ],
+    "total": 44925
+  }
+}
+```
+
+### 认证交易员
+```bash
+POST /open/traders
+{
+  "page": 1,
+  "page_size": 10,
+  "type": "week"  // day, week, month, allTime
+}
+```
+
+说明：接口当前可正常访问，但可能返回空 `data`。客户端应把空列表视为有效响应，而不是请求失败。
+
+### Smart Money 排行榜
+```bash
+POST /open/smartmoney
+{
+  "page": 1,
+  "page_size": 10,
+  "type": "week"  // day, week, month, allTime
+}
+
+Response:
+{
+  "data": {
+    "list": [
+      {
+        "address": "0x...",
+        "vlm": "交易量",
+        "pnl": "收益",
+        "roi": "收益率",
+        "winrate": "胜率",
+        "drawdown": "最大回撤",
+        "total": "交易数",
+        "follower": "跟随者",
+        "value": "账户价值",
+        "is_trader": true
+      }
+    ],
+    "total": 260
+  }
+}
+```
+
 ### 热点猎杀者
 ```bash
 POST /apps/hothunter
