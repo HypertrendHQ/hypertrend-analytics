@@ -45,6 +45,10 @@ Use these CLI `--type` values:
 
 | Type | Meaning | Primary fields |
 | --- | --- | --- |
+| `gravity` | Gravity index ranking | `address`, `rankno`, `score`, `profit`, `risk`, `market`, `leverage`, `win_rate`, `footprint`, `pnl`, `pnl30d`, `roi`, `value` |
+| `credrank` | Credit reputation ranking | `address`, `rankno`, `credscore`, `gravity_index`, `eco_score`, `social_credit`, `identity_consistency` |
+| `traders` | Certified traders | May return an empty `data` payload when no public certified-trader list is available |
+| `smartmoney` | Smart-money leaderboard | `address`, `vlm`, `pnl`, `roi`, `winrate`, `drawdown`, `total`, `follower`, `value`, `is_trader` |
 | `master` | Stable/master traders | `address`, `rankno`, `pnl`, `roi/rio`, `winrate/win_rate`, `drawdown`, `cross_rate`, `avalue` |
 | `hothunter` | Hot opportunity hunters | `address`, `rankno`, `position`, `pnl`, `roi/rio`, `cross_rate`, `vlm`, `avalue` |
 | `vertex` | High-activity/volume leaders | `address`, `rankno`, `total`, `spot`, `perpetuals`, `vlm`, `pnl`, `roi/rio`, `avalue` |
