@@ -1,10 +1,17 @@
 # HyperTrend Analytics Skill
 
+HyperTrend Analytics is an agent-ready skill for accessing and analyzing HyperTrend and Hyperliquid trader data. It helps AI agents fetch leaderboard rankings, compare wallet performance, identify high-quality trader candidates, and match copy-trading ideas to different risk profiles using real HyperTrend data instead of static examples.
+
+The skill includes a lightweight CLI for retrieving leaderboards, exporting JSON, inspecting schemas, and ranking traders by conservative, moderate, aggressive, or quantitative preferences. It is designed to make HyperTrend market intelligence easier for agents to use while keeping analysis transparent, source-aware, and risk-conscious.
+
 基于 Hyperliquid 的链上信用分析与智能交易工具，专为 OpenClaw 设计。
 
 ## 🚀 核心功能
 
 - **🔗 引力指数查询** - HyperTrend 六芒星信用评分系统
+- **🏅 信用信誉排行** - 查询 `/open/credrank` 信用声誉榜
+- **🧠 Smart Money 榜单** - 查询 `/open/smartmoney` 聪明钱排行榜
+- **✅ 认证交易员** - 查询 `/open/traders` 认证交易员接口
 - **👤 HL 地址分析** - 持仓、杠杆、盈亏全面分析
 - **🐋 鲸鱼监控** - 追踪 >$500K 大仓位动态
 - **📊 地址对比** - 多地址交易表现横向对比
@@ -20,10 +27,10 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/hypertrend/hypertrend-analytics-skill.git
+git clone https://github.com/HypertrendHQ/hypertrend-analytics.git
 
 # 进入目录
-cd hypertrend-analytics-skill
+cd hypertrend-analytics
 
 # 安装到 OpenClaw
 mv . ~/.openclaw/skills/hypertrend-analytics
@@ -56,6 +63,27 @@ python3 risk_match.py moderate        # 稳健型推荐
 python3 risk_match.py aggressive      # 进取型推荐
 python3 risk_match.py quantitative    # 量化型推荐
 ```
+
+### 新公开榜单接口
+
+```bash
+# 统一 CLI（推荐给 agent 使用）
+python scripts/hypertrend_cli.py leaderboard --type gravity --period week --limit 10
+python scripts/hypertrend_cli.py leaderboard --type credrank --period week --limit 10
+python scripts/hypertrend_cli.py leaderboard --type smartmoney --period week --limit 10
+python scripts/hypertrend_cli.py leaderboard --type traders --period week --limit 10
+```
+
+支持周期：`day`、`week`、`month`、`allTime`。
+
+接口映射：
+
+| CLI Type | API Endpoint | 说明 |
+| --- | --- | --- |
+| `gravity` | `POST /open/gravity` | 引力指数榜 |
+| `credrank` | `POST /open/credrank` | 信用信誉排行榜 |
+| `traders` | `POST /open/traders` | 认证交易员，当前可能返回空数据 |
+| `smartmoney` | `POST /open/smartmoney` | Smart Money 排行榜 |
 
 ### OpenClaw 对话示例
 
