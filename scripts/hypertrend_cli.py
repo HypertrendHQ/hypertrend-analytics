@@ -38,7 +38,7 @@ LEADERBOARDS: Dict[str, Dict[str, Any]] = {
     "hexagram": {
         "label": "Hexagram",
         "endpoints": ["/open/hexagram", "/apps/hexagram"],
-        "fields": ["rankno", "address", "average", "hexagram", "is_follow", "is_copy"],
+        "fields": ["rankno", "address", "score", "profit", "risk", "market", "leverage", "win_rate", "footprint", "is_follow", "is_copy"],
     },
     "billings": {
         "label": "Billings",
