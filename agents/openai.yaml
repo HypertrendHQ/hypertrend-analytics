@@ -1,0 +1,7 @@
+interface:
+  display_name: "HyperTrend Analytics"
+  short_description: "Fetch HyperTrend rankings and trader signals"
+  default_prompt: "Use $hypertrend-analytics to find data-backed HyperTrend trader candidates for my risk profile."
+
+policy:
+  allow_implicit_invocation: true
