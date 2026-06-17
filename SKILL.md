@@ -48,7 +48,7 @@ Use these CLI `--type` values:
 | `master` | Stable/master traders | `address`, `rankno`, `pnl`, `roi/rio`, `winrate/win_rate`, `drawdown`, `cross_rate`, `avalue` |
 | `hothunter` | Hot opportunity hunters | `address`, `rankno`, `position`, `pnl`, `roi/rio`, `cross_rate`, `vlm`, `avalue` |
 | `vertex` | High-activity/volume leaders | `address`, `rankno`, `total`, `spot`, `perpetuals`, `vlm`, `pnl`, `roi/rio`, `avalue` |
-| `hexagram` | Six-hexagram/gravity quality ranking | `address`, `rankno`, `hexagram`, `average`, `is_follow`, `is_copy` |
+| `hexagram` | Six-hexagram/gravity quality ranking | `address`, `rankno`, `score`, `profit`, `risk`, `market`, `leverage`, `win_rate`, `footprint` |
 | `billings` | Order-count statistics | `address`, `rankno`, `value`, `pnl`, `roi/rio`, `vlm`, `total`, `spot`, `perpetuals` |
 | `volume` | Market volume data | `name`, `maxLeverage`, `dayNtlVlm`, `oraclePx`, `markPx` |
 
