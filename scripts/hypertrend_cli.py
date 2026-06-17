@@ -20,6 +20,26 @@ DEFAULT_BASE_URL = "https://app.hypertrend.top/api"
 LEGACY_BASE_URL = "http://192.144.239.66/api"
 
 LEADERBOARDS: Dict[str, Dict[str, Any]] = {
+    "gravity": {
+        "label": "Gravity Index",
+        "endpoints": ["/open/gravity"],
+        "fields": ["rankno", "address", "score", "profit", "risk", "market", "leverage", "win_rate", "footprint", "pnl", "pnl30d", "roi", "value"],
+    },
+    "credrank": {
+        "label": "Credit Ranking",
+        "endpoints": ["/open/credrank"],
+        "fields": ["rankno", "address", "credscore", "gravity_index", "eco_score", "social_credit", "identity_consistency"],
+    },
+    "traders": {
+        "label": "Certified Traders",
+        "endpoints": ["/open/traders"],
+        "fields": ["rankno", "address", "name", "user_name", "score", "pnl", "roi", "win_rate", "drawdown", "avalue"],
+    },
+    "smartmoney": {
+        "label": "Smart Money",
+        "endpoints": ["/open/smartmoney"],
+        "fields": ["rankno", "address", "vlm", "pnl", "roi", "winrate", "drawdown", "total", "follower", "value", "is_trader"],
+    },
     "master": {
         "label": "Stable Master",
         "endpoints": ["/open/master", "/apps/master"],
@@ -133,15 +153,21 @@ def fetch_leaderboard(kind: str, period: str, limit: int, timeout: int, base_url
         bases.append(LEGACY_BASE_URL)
 
     attempts: List[Dict[str, Any]] = []
+    first_ok: Optional[Tuple[List[Dict[str, Any]], Dict[str, Any]]] = None
     for current_base in bases:
         for endpoint in LEADERBOARDS[kind]["endpoints"]:
             result = post_json(current_base, endpoint, payload, timeout)
             attempts.append(result)
             if result["ok"]:
                 rows = extract_rows(result["json"])
+                meta = {"source_url": result["url"], "period": period, "type": kind, "attempts": attempts}
+                if first_ok is None:
+                    first_ok = (rows[:limit], meta)
                 if rows:
-                    meta = {"source_url": result["url"], "period": period, "type": kind, "attempts": attempts}
                     return rows[:limit], meta
+
+    if first_ok is not None:
+        return first_ok
 
     detail = attempts[-1]["error"] if attempts else "No request attempted"
     raise SystemExit(f"Unable to fetch HyperTrend data: {detail}")
