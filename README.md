@@ -74,6 +74,7 @@ python scripts/hypertrend_cli.py leaderboard --type gravity --period week --limi
 python scripts/hypertrend_cli.py leaderboard --type credrank --period week --limit 10
 python scripts/hypertrend_cli.py leaderboard --type smartmoney --period week --limit 10
 python scripts/hypertrend_cli.py leaderboard --type traders --period week --limit 10
+python scripts/hypertrend_cli.py leaderboard --type hyperliquid --period week --limit 10
 ```
 
 支持周期：`day`、`week`、`month`、`allTime`。
@@ -86,6 +87,7 @@ CLI 类型：
 | `credrank` | 信用信誉排行榜 | Credit Reputation Ranking |
 | `traders` | 认证交易员，当前可能返回空数据 | Certified Traders |
 | `smartmoney` | 聪明钱排行榜 | Smart Money Ranking |
+| `hyperliquid` | Hyperliquid 官方统计榜单 | Hyperliquid Official Stats |
 
 ### OpenClaw 对话示例
 
