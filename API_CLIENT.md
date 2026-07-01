@@ -52,6 +52,36 @@ POST /base/login
 
 ## 📊 榜单数据接口
 
+### Hyperliquid 官方统计榜单
+```bash
+GET https://stats-data.hyperliquid.xyz/Mainnet/leaderboard
+```
+
+Response:
+```json
+{
+  "leaderboardRows": [
+    {
+      "ethAddress": "0x...",
+      "accountValue": "63390260.0265950039",
+      "windowPerformances": [
+        ["day", {"pnl": "497208.702577", "roi": "0.0090919798", "vlm": "1264150485.9400002956"}],
+        ["week", {"pnl": "592385.6818529998", "roi": "0.0094723535", "vlm": "8731743930.2600002289"}],
+        ["month", {"pnl": "1343794.3104930001", "roi": "0.0169668782", "vlm": "44113112558.9300003052"}],
+        ["allTime", {"pnl": "5444658.8647599984", "roi": "0.090...", "vlm": "..."}]
+      ]
+    }
+  ]
+}
+```
+
+CLI:
+```bash
+python scripts/hypertrend_cli.py leaderboard --type hyperliquid --period week --limit 10
+```
+
+说明：该接口是 Hyperliquid stats 数据源，响应体较大。客户端应按 `windowPerformances` 中的 `day`、`week`、`month` 或 `allTime` 提取对应窗口的 `pnl`、`roi`、`vlm`。
+
 ### 引力指数
 ```bash
 POST /open/gravity
