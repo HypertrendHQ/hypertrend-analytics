@@ -18,8 +18,14 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 DEFAULT_BASE_URL = "https://app.hypertrend.top/api"
 LEGACY_BASE_URL = "http://192.144.239.66/api"
+DEFAULT_HYPERLIQUID_LEADERBOARD_URL = "https://stats-data.hyperliquid.xyz/Mainnet/leaderboard"
 
 LEADERBOARDS: Dict[str, Dict[str, Any]] = {
+    "hyperliquid": {
+        "label": "Hyperliquid Stats",
+        "source": "hyperliquid_stats",
+        "fields": ["rankno", "address", "accountValue", "pnl", "roi", "vlm"],
+    },
     "gravity": {
         "label": "Gravity Index",
         "endpoints": ["/open/gravity"],
@@ -123,6 +129,19 @@ def post_json(base_url: str, endpoint: str, payload: Dict[str, Any], timeout: in
         return {"ok": False, "url": url, "status": None, "error": str(exc)}
 
 
+def get_json(url: str, timeout: int) -> Dict[str, Any]:
+    request = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "HyperTrend-Analytics-Skill"}, method="GET")
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            body = response.read().decode("utf-8", errors="replace")
+            return {"ok": True, "url": url, "status": response.status, "json": json.loads(body)}
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        return {"ok": False, "url": url, "status": exc.code, "error": body[:500]}
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+        return {"ok": False, "url": url, "status": None, "error": str(exc)}
+
+
 def extract_rows(payload: Any) -> List[Dict[str, Any]]:
     if isinstance(payload, list):
         return [row for row in payload if isinstance(row, dict)]
@@ -143,9 +162,45 @@ def extract_rows(payload: Any) -> List[Dict[str, Any]]:
     return []
 
 
+def fetch_hyperliquid_leaderboard(period: str, limit: int, timeout: int) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    url = os.getenv("HYPERLIQUID_STATS_LEADERBOARD_URL", DEFAULT_HYPERLIQUID_LEADERBOARD_URL)
+    result = get_json(url, timeout)
+    if not result["ok"]:
+        raise SystemExit(f"Unable to fetch Hyperliquid stats leaderboard: {result['error']}")
+
+    rows = []
+    source_rows = result["json"].get("leaderboardRows", []) if isinstance(result["json"], dict) else []
+    for index, item in enumerate(source_rows, start=1):
+        if not isinstance(item, dict):
+            continue
+        windows = item.get("windowPerformances", [])
+        performance = {}
+        for window in windows:
+            if isinstance(window, list) and len(window) == 2 and window[0] == period and isinstance(window[1], dict):
+                performance = window[1]
+                break
+        rows.append(
+            {
+                "rankno": index,
+                "address": item.get("ethAddress", ""),
+                "accountValue": item.get("accountValue", ""),
+                "pnl": performance.get("pnl", ""),
+                "roi": performance.get("roi", ""),
+                "vlm": performance.get("vlm", ""),
+            }
+        )
+        if len(rows) >= limit:
+            break
+
+    meta = {"source_url": result["url"], "period": period, "type": "hyperliquid", "source_rows": len(source_rows)}
+    return rows, meta
+
+
 def fetch_leaderboard(kind: str, period: str, limit: int, timeout: int, base_url: Optional[str] = None) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     if kind not in LEADERBOARDS:
         raise SystemExit(f"Unknown leaderboard type: {kind}. Choose: {', '.join(LEADERBOARDS)}")
+    if LEADERBOARDS[kind].get("source") == "hyperliquid_stats":
+        return fetch_hyperliquid_leaderboard(period, limit, timeout)
 
     payload = {"page": 1, "page_size": limit, "type": period}
     bases = [base_url or env_base_url()]
