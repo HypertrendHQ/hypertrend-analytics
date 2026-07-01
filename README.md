@@ -4,24 +4,26 @@ HyperTrend Analytics is an agent-ready skill for accessing and analyzing HyperTr
 
 The skill includes a lightweight CLI for retrieving leaderboards, exporting JSON, inspecting schemas, and ranking traders by conservative, moderate, aggressive, or quantitative preferences. It is designed to make HyperTrend market intelligence easier for agents to use while keeping analysis transparent, source-aware, and risk-conscious.
 
-基于 Hyperliquid 的链上信用分析与智能交易工具，专为 OpenClaw 设计。
+HyperTrend Analytics 是一个面向 Agent 的 HyperTrend 与 Hyperliquid 交易数据分析 Skill。它可以帮助 AI Agent 获取排行榜、比较钱包表现、发现高质量交易者，并根据不同风险偏好匹配跟单候选人。
+
+该 Skill 内置轻量级 CLI，可用于获取榜单、导出 JSON、查看数据结构，并按保守、稳健、进取或量化偏好筛选交易者，让 Agent 更方便地使用真实 HyperTrend 数据进行透明、可追溯、风险意识更强的分析。
 
 ## 🚀 核心功能
 
-- **🔗 引力指数查询** - HyperTrend 六芒星信用评分系统
-- **🏅 信用信誉排行** - 查询 `/open/credrank` 信用声誉榜
-- **🧠 Smart Money 榜单** - 查询 `/open/smartmoney` 聪明钱排行榜
-- **✅ 认证交易员** - 查询 `/open/traders` 认证交易员接口
-- **👤 HL 地址分析** - 持仓、杠杆、盈亏全面分析
-- **🐋 鲸鱼监控** - 追踪 >$500K 大仓位动态
-- **📊 地址对比** - 多地址交易表现横向对比
-- **📝 数据推文** - 基于真实数据生成社交媒体内容
-- **🤖 自动跟单** - 智能筛选并自动跟随优质交易者
-- **📈 榜单系统** - 引力/收益/胜率/带单多维度榜单
-- **🔔 变化追踪** - 榜单排名变化实时监控
-- **💰 平台跟单** - HyperTrend 平台直接跟单交易
-- **👁️ 地址监控** - 实时追踪地址操作和资金变动
-- **🎯 风险偏好匹配** - 根据用户风险偏好智能推荐交易者 ⭐v2.5.0
+- **🔗 引力指数 / Gravity Index** - HyperTrend 六芒星信用评分与综合交易质量评估
+- **🏅 信用信誉排行 / Credit Reputation Ranking** - 基于信用分、生态分、社交信用和身份一致性的声誉榜
+- **🧠 聪明钱榜单 / Smart Money Ranking** - 发现高交易量、高收益或高关注度的聪明钱地址
+- **✅ 认证交易员 / Certified Traders** - 获取平台认证交易员数据，供 Agent 做候选人研究
+- **👤 HL 地址分析 / HL Address Analysis** - 分析持仓、杠杆、盈亏和账户价值
+- **🐋 鲸鱼监控 / Whale Monitoring** - 追踪大仓位和高价值地址动态
+- **📊 地址对比 / Address Comparison** - 横向比较多个地址的交易表现
+- **📝 数据推文 / Data-Backed Content** - 基于真实数据生成社交媒体内容
+- **🤖 自动跟单 / Copy-Trading Research** - 智能筛选优质交易者，辅助跟单决策
+- **📈 多维榜单 / Multi-Dimensional Leaderboards** - 覆盖引力、收益、胜率、带单、信用和聪明钱榜单
+- **🔔 排名变化 / Ranking Changes** - 跟踪榜单排名变化和新晋地址
+- **💰 平台跟单 / Platform Copy Trading** - 支持 HyperTrend 平台跟单流程研究
+- **👁️ 地址监控 / Address Monitoring** - 实时追踪地址操作和资金变动
+- **🎯 风险偏好匹配 / Risk-Profile Matching** - 根据保守、稳健、进取或量化偏好推荐交易者
 
 ## 📦 安装
 
@@ -64,7 +66,7 @@ python3 risk_match.py aggressive      # 进取型推荐
 python3 risk_match.py quantitative    # 量化型推荐
 ```
 
-### 新公开榜单接口
+### 公开榜单 / Public Leaderboards
 
 ```bash
 # 统一 CLI（推荐给 agent 使用）
@@ -76,14 +78,14 @@ python scripts/hypertrend_cli.py leaderboard --type traders --period week --limi
 
 支持周期：`day`、`week`、`month`、`allTime`。
 
-接口映射：
+CLI 类型：
 
-| CLI Type | API Endpoint | 说明 |
+| CLI Type | 中文说明 | English |
 | --- | --- | --- |
-| `gravity` | `POST /open/gravity` | 引力指数榜 |
-| `credrank` | `POST /open/credrank` | 信用信誉排行榜 |
-| `traders` | `POST /open/traders` | 认证交易员，当前可能返回空数据 |
-| `smartmoney` | `POST /open/smartmoney` | Smart Money 排行榜 |
+| `gravity` | 引力指数榜 | Gravity Index |
+| `credrank` | 信用信誉排行榜 | Credit Reputation Ranking |
+| `traders` | 认证交易员，当前可能返回空数据 | Certified Traders |
+| `smartmoney` | 聪明钱排行榜 | Smart Money Ranking |
 
 ### OpenClaw 对话示例
 
