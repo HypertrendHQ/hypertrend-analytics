@@ -16,6 +16,7 @@ From the skill directory, use the dependency-light CLI:
 ```bash
 python scripts/hypertrend_cli.py leaderboard --type master --period week --limit 20 --format table
 python scripts/hypertrend_cli.py leaderboard --type hexagram --period allTime --limit 10 --format json
+python scripts/hypertrend_cli.py leaderboard --type hyperliquid --period week --limit 20 --format table
 python scripts/hypertrend_cli.py risk-match --profile conservative --period week --limit 50
 python scripts/hypertrend_cli.py schema --type master
 ```
@@ -39,12 +40,27 @@ export HYPERTREND_API_TOKEN="..."
 
 The CLI automatically tries public `/open/*` endpoints first and falls back to `/apps/*` endpoints. Authenticated endpoints require `HYPERTREND_API_TOKEN`.
 
+Hyperliquid stats leaderboard source:
+
+```bash
+https://stats-data.hyperliquid.xyz/Mainnet/leaderboard
+```
+
+Override when needed:
+
+```bash
+export HYPERLIQUID_STATS_LEADERBOARD_URL="https://stats-data.hyperliquid.xyz/Mainnet/leaderboard"
+```
+
+Use `--type hyperliquid` to fetch this source. The response is a large JSON payload with `leaderboardRows`; the CLI extracts `ethAddress`, `accountValue`, and the selected `windowPerformances` period.
+
 ## Leaderboards
 
 Use these CLI `--type` values:
 
 | Type | Meaning | Primary fields |
 | --- | --- | --- |
+| `hyperliquid` | Hyperliquid official stats leaderboard | `address`, `rankno`, `accountValue`, `pnl`, `roi`, `vlm` extracted from `leaderboardRows` and selected `windowPerformances` |
 | `gravity` | Gravity index ranking | `address`, `rankno`, `score`, `profit`, `risk`, `market`, `leverage`, `win_rate`, `footprint`, `pnl`, `pnl30d`, `roi`, `value` |
 | `credrank` | Credit reputation ranking | `address`, `rankno`, `credscore`, `gravity_index`, `eco_score`, `social_credit`, `identity_consistency` |
 | `traders` | Certified traders | May return an empty `data` payload when no public certified-trader list is available |
